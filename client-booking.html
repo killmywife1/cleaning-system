@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запись на химчистку - Чистый Дом</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+        .back-link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .calendar {
+            margin: 25px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .date-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .time-slot {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid;
+            font-weight: bold;
+        }
+        .slot-free { 
+            background: #d5f4e6; 
+            border-color: #2ecc71;
+            color: #27ae60;
+        }
+        .slot-busy { 
+            background: #fadbd8; 
+            border-color: #e74c3c;
+            cursor: not-allowed;
+            opacity: 0.5;
+            color: #c0392b;
+        }
+        .slot-blocked { 
+            background: #fdebd0; 
+            border-color: #e67e22;
+            cursor: not-allowed;
+            opacity: 0.5;
+            color: #d35400;
+        }
+        .slot-selected { 
+            background: #3498db; 
+            color: white;
+            border-color: #2980b9;
+        }
+        .time-slot:hover:not(.slot-busy):not(.slot-blocked) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: #27ae60;
+        }
+        .submit-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .hidden {
+            display: none;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .step.active {
+            background: #3498db;
+            color: white;
+        }
+        .step-line {
+            flex: 1;
+            height: 3px;
+            background: #ecf0f1;
+            margin: 0 5px;
+            align-self: center;
+        }
+        .order-summary {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .service-option {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid #ecf0f1;
+            transition: border-color 0.3s;
+        }
+        .service-option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        .service-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .price-badge {
+            background: #2ecc71;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← На главную</a>
+            <h1>📝 Запись на химчистку</h1>
+            <p>Выберите услугу и удобное время</p>
+        </div>
+
+        <!-- Индикатор шагов -->
+        <div class="step-indicator">
+            <div class="step active">1</div>
+            <div class="step-line"></div>
+            <div class="step">2</div>
+            <div class="step-line"></div>
+            <div class="step">3</div>
+        </div>
+
+        <!-- Форма клиента -->
+        <form id="bookingForm">
+            <!-- Шаг 1: Выбор услуги -->
+            <div class="form-group" id="serviceStep">
+                <h3>Выберите услугу</h3>
+                
+                <div class="service-option" onclick="selectService('sofa_2', 1700)">
+                    <input type="radio" name="service" value="sofa_2" id="sofa_2">
+                    <label for="sofa_2" style="display: inline; margin: 0; cursor: pointer;">Диван 2-местный</label>
+                    <span class="price-badge">1700 ₽</span>
+                </div>
+
+                <div class="service-option" onclick="selectService('sofa_3', 2200)">
+                    <input type="radio" name="service" value="sofa_3" id="sofa_3">
+                    <label for="sofa_3" style="display: inline; margin: 0; cursor: pointer;">Диван 3-местный</label>
+                    <span class="price-badge">2200 ₽</span>
+                </div>
+
+                <div class="service-option" onclick="selectService('armchair', 1300)">
+                    <input type="radio" name="service" value="armchair" id="armchair">
+                    <label for="armchair" style="display: inline; margin: 0; cursor: pointer;">Кресло</label>
+                    <span class="price-badge">1300 ₽</span>
+                </div>
+
+                <div class="service-option" onclick="selectService('mattress_1', 1600)">
+                    <input type="radio" name="service" value="mattress_1" id="mattress_1">
+                    <label for="mattress_1" style="display: inline; margin: 0; cursor: pointer;">Матрас односпальный</label>
+                    <span class="price-badge">1600 ₽</span>
+                </div>
+
+                <div class="service-option" onclick="selectService('mattress_2', 2000)">
+                    <input type="radio" name="service" value="mattress_2" id="mattress_2">
+                    <label for="mattress_2" style="display: inline; margin: 0; cursor: pointer;">Матрас двуспальный</label>
+                    <span class="price-badge">2000 ₽</span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label>Дополнительные опции:</label>
+                    <div style="margin-top: 10px;">
+                        <input type="checkbox" id="urgent" onchange="calculateTotal()">
+                        <label for="urgent" style="display: inline; margin-left: 5px;">Срочный выезд (+20%)</label>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <input type="checkbox" id="stain" onchange="calculateTotal()">
+                        <label for="stain" style="display: inline; margin-left: 5px;">Сложные пятна (+300 ₽)</label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                    <strong>Предварительная стоимость: <span id="preliminaryTotal">0</span> ₽</strong>
+                </div>
+
+                <button type="button" onclick="nextStep()" style="margin-top: 20px; padding: 15px 30px; background: #3498db; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+                    Далее → Выбор времени
+                </button>
+            </div>
+
+            <!-- Шаг 2: Выбор времени -->
+            <div class="form-group hidden" id="timeStep">
+                <h3>Выберите удобное время</h3>
+                
+                <div class="calendar">
+                    <div class="date-navigation">
+                        <button type="button" class="nav-btn" onclick="changeDate(-1)">← Назад</button>
+                        <span id="currentDate" style="font-weight: bold; font-size: 16px;">Загрузка...</span>
+                        <button type="button" class="nav-btn" onclick="changeDate(1)">Вперед →</button>
+                    </div>
+                    
+                    <div class="time-slots" id="timeSlots">
+                        <!-- Сюда загружаются временные окна -->
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="prevStep()" style="flex: 1; padding: 15px; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        ← Назад
+                    </button>
+                    <button type="button" onclick="nextStep()" style="flex: 1; padding: 15px; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        Далее → Данные
+                    </button>
+                </div>
+            </div>
+
+            <!-- Шаг 3: Данные клиента -->
+            <div class="form-group hidden" id="clientStep">
+                <h3>Ваши контактные данные</h3>
+                
+                <div class="order-summary" id="orderSummary">
+                    <!-- Сюда подставляется информация о заказе -->
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="clientName">Ваше имя *</label>
+                    <input type="text" id="clientName" placeholder="Иван Иванов" required>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="clientPhone">Номер телефона *</label>
+                    <input type="tel" id="clientPhone" placeholder="+7 (999) 123-45-67" required>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="clientAddress">Адрес *</label>
+                    <input type="text" id="clientAddress" placeholder="ул. Примерная, д. 1, кв. 1" required>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="clientComment">Комментарий к заказу</label>
+                    <textarea id="clientComment" placeholder="Особые пятна, особенности мебели, пожелания..."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" onclick="prevStep()" style="flex: 1; padding: 15px; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        ← Назад
+                    </button>
+                    <button type="submit" class="submit-btn">Отправить заявку</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedDate = new Date().toISOString().split('T')[0];
+        let selectedTimeSlot = null;
+        let currentCalendar = {};
+        let selectedService = null;
+        let servicePrice = 0;
+
+        // Загрузка календаря при запуске
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCalendar();
+            updateDateDisplay();
+            loadTimeSlots();
+            updateStepIndicator();
+        });
+
+        // Загрузка календаря из sessionStorage
+        function loadCalendar() {
+            const savedCalendar = sessionStorage.getItem('cleaning_calendar');
+            if (savedCalendar) {
+                currentCalendar = JSON.parse(savedCalendar);
+            }
+        }
+
+        // Выбор услуги
+        function selectService(service, price) {
+            selectedService = service;
+            servicePrice = price;
+            
+            // Снимаем выделение со всех опций
+            document.querySelectorAll('.service-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Выделяем выбранную опцию
+            event.currentTarget.classList.add('selected');
+            document.querySelector(`input[value="${service}"]`).checked = true;
+            
+            calculateTotal();
+        }
+
+        // Расчет стоимости
+        function calculateTotal() {
+            if (!servicePrice) {
+                document.getElementById('preliminaryTotal').textContent = '0';
+                return;
+            }
+
+            let total = servicePrice;
+            
+            // Дополнительные услуги
+            if (document.getElementById('urgent').checked) {
+                total += total * 0.2;
+            }
+            if (document.getElementById('stain').checked) {
+                total += 300;
+            }
+
+            document.getElementById('preliminaryTotal').textContent = Math.round(total);
+        }
+
+        // Обновление индикатора шагов
+        function updateStepIndicator() {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        // Навигация по шагам
+        function nextStep() {
+            if (currentStep === 1 && !selectedService) {
+                alert('Пожалуйста, выберите услугу');
+                return;
+            }
+            
+            if (currentStep === 2 && !selectedTimeSlot) {
+                alert('Пожалуйста, выберите время для записи');
+                return;
+            }
+
+            document.getElementById('serviceStep').classList.add('hidden');
+            document.getElementById('timeStep').classList.add('hidden');
+            document.getElementById('clientStep').classList.add('hidden');
+
+            if (currentStep === 1) {
+                document.getElementById('timeStep').classList.remove('hidden');
+                currentStep = 2;
+                loadTimeSlots();
+            } else if (currentStep === 2) {
+                document.getElementById('clientStep').classList.remove('hidden');
+                currentStep = 3;
+                updateOrderSummary();
+            }
+            
+            updateStepIndicator();
+        }
+
+        function prevStep() {
+            document.getElementById('serviceStep').classList.add('hidden');
+            document.getElementById('timeStep').classList.add('hidden');
+            document.getElementById('clientStep').classList.add('hidden');
+
+            if (currentStep === 2) {
+                document.getElementById('serviceStep').classList.remove('hidden');
+                currentStep = 1;
+            } else if (currentStep === 3) {
+                document.getElementById('timeStep').classList.remove('hidden');
+                currentStep = 2;
+            }
+            
+            updateStepIndicator();
+        }
+
+        // Работа с датами
+        function changeDate(days) {
+            const date = new Date(selectedDate);
+            date.setDate(date.getDate() + days);
+            
+            // Не позволяем выбрать прошедшие даты
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            if (date < today) {
+                alert('Нельзя выбрать прошедшую дату');
+                return;
+            }
+            
+            selectedDate = date.toISOString().split('T')[0];
+            updateDateDisplay();
+            loadTimeSlots();
+            selectedTimeSlot = null;
+        }
+
+        function updateDateDisplay() {
+            const date = new Date(selectedDate);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('ru-RU', options);
+        }
+
+        // Загрузка временных окон
+        function loadTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+
+            const timeSlots = ["09:00-11:00", "11:00-13:00", "13:00-15:00", "15:00-17:00", "17:00-19:00"];
+
+            timeSlots.forEach(slot => {
+                const slotElement = document.createElement('div');
+                
+                // Проверяем статус слота
+                let status = 'free';
+                if (currentCalendar[selectedDate] && currentCalendar[selectedDate][slot]) {
+                    status = currentCalendar[selectedDate][slot].status;
+                }
+
+                slotElement.className = `time-slot slot-${status} ${selectedTimeSlot === slot ? 'slot-selected' : ''}`;
+                slotElement.textContent = slot;
+
+                if (status === 'free') {
+                    slotElement.addEventListener('click', () => selectTimeSlot(slot));
+                }
+
+                timeSlotsContainer.appendChild(slotElement);
+            });
+        }
+
+        // Выбор временного окна
+        function selectTimeSlot(slot) {
+            selectedTimeSlot = slot;
+            loadTimeSlots();
+        }
+
+        // Обновление сводки заказа
+        function updateOrderSummary() {
+            const serviceNames = {
+                'sofa_2': 'Диван 2-местный',
+                'sofa_3': 'Диван 3-местный', 
+                'armchair': 'Кресло',
+                'mattress_1': 'Матрас односпальный',
+                'mattress_2': 'Матрас двуспальный'
+            };
+
+            const serviceName = serviceNames[selectedService];
+            const date = new Date(selectedDate);
+            const dateString = date.toLocaleDateString('ru-RU');
+
+            let extras = [];
+            if (document.getElementById('urgent').checked) extras.push('Срочный выезд');
+            if (document.getElementById('stain').checked) extras.push('Сложные пятна');
+
+            calculateTotal();
+            const total = document.getElementById('preliminaryTotal').textContent;
+
+            document.getElementById('orderSummary').innerHTML = `
+                <strong>Ваш заказ:</strong><br><br>
+                <strong>Услуга:</strong> ${serviceName}<br>
+                <strong>Дата:</strong> ${dateString}<br>
+                <strong>Время:</strong> ${selectedTimeSlot}<br>
+                ${extras.length > 0 ? `<strong>Дополнительно:</strong> ${extras.join(', ')}<br>` : ''}
+                <strong style="color: #2ecc71; font-size: 18px;">Итого: ${total} ₽</strong>
+            `;
+        }
+
+        // Отправка формы
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Проверяем обязательные поля
+            if (!document.getElementById('clientName').value || 
+                !document.getElementById('clientPhone').value || 
+                !document.getElementById('clientAddress').value) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            // Создаем новую заявку
+            const newOrder = {
+                id: Date.now(),
+                date: `${selectedDate} ${new Date().getHours()}:${new Date().getMinutes()}`,
+                client: {
+                    name: document.getElementById('clientName').value,
+                    phone: document.getElementById('clientPhone').value,
+                    address: document.getElementById('clientAddress').value,
+                    comment: document.getElementById('clientComment').value
+                },
+                order: {
+                    product: selectedService,
+                    product_name: document.querySelector(`input[value="${selectedService}"]`).nextElementSibling.textContent,
+                    tariff: 'base',
+                    extras: [],
+                    total: parseInt(document.getElementById('preliminaryTotal').textContent)
+                },
+                status: "new",
+                time_slot: selectedTimeSlot
+            };
+
+            // Добавляем допуслуги
+            if (document.getElementById('urgent').checked) {
+                newOrder.order.extras.push('urgent');
+            }
+            if (document.getElementById('stain').checked) {
+                newOrder.order.extras.push('stain');
+            }
+
+            // Сохраняем заявку
+            saveOrder(newOrder);
+
+            // Блокируем время в календаре
+            blockTimeSlot(newOrder);
+
+            alert('✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время для подтверждения.');
+            
+            // Сбрасываем форму
+            this.reset();
+            currentStep = 1;
+            selectedTimeSlot = null;
+            selectedService = null;
+            servicePrice = 0;
+            document.querySelectorAll('.service-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('preliminaryTotal').textContent = '0';
+            
+            // Возвращаем на первый шаг
+            document.getElementById('serviceStep').classList.remove('hidden');
+            document.getElementById('timeStep').classList.add('hidden');
+            document.getElementById('clientStep').classList.add('hidden');
+            updateStepIndicator();
+        });
+
+        function saveOrder(order) {
+            const existingOrders = JSON.parse(sessionStorage.getItem('cleaning_orders') || '[]');
+            existingOrders.push(order);
+            sessionStorage.setItem('cleaning_orders', JSON.stringify(existingOrders));
+        }
+
+        function blockTimeSlot(order) {
+            if (!currentCalendar[selectedDate]) {
+                currentCalendar[selectedDate] = {};
+            }
+            currentCalendar[selectedDate][selectedTimeSlot] = {
+                status: "busy",
+                order_id: order.id
+            };
+            
+            sessionStorage.setItem('cleaning_calendar', JSON.stringify(currentCalendar));
+        }
+    </script>
+</body>
+</html>
