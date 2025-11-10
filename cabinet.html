@@ -152,6 +152,9 @@
         .stat-card.red { 
             background: linear-gradient(135deg, #e74c3c, #c0392b);
         }
+        .stat-card.purple { 
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
         .stat-card span {
             font-size: 24px;
             font-weight: 800;
@@ -364,7 +367,7 @@
             color: #34495e;
             font-size: 16px;
         }
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 16px;
             border: 2px solid #e1e8ed;
@@ -375,7 +378,11 @@
             -webkit-appearance: none;
             min-height: 54px;
         }
-        .form-group input:focus, .form-group select:focus {
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: #3498db;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
@@ -402,6 +409,65 @@
         }
         .action-btn:active {
             transform: scale(0.95);
+        }
+        
+        /* Стили для акций */
+        .promotions-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #e9ecef;
+        }
+        .promotion-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #e1e8ed;
+            transition: all 0.3s ease;
+        }
+        .promotion-card:active {
+            transform: scale(0.98);
+        }
+        .promotion-card.active {
+            border-color: #2ecc71;
+            background: #f0fff4;
+        }
+        .promotion-card.expired {
+            border-color: #e74c3c;
+            background: #fff5f5;
+            opacity: 0.7;
+        }
+        .promotion-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .promotion-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #2c3e50;
+            flex: 1;
+        }
+        .promotion-discount {
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .promotion-date {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .promotion-description {
+            margin-top: 10px;
+            color: #34495e;
+            line-height: 1.4;
         }
         
         /* Toast уведомления */
@@ -552,13 +618,58 @@
         
         <!-- Основная панель -->
         <div class="dashboard">
-            <!-- Статистика -->
+            <!-- Основной контент -->
             <div>
+                <!-- Статистика -->
                 <div class="stats">
                     <div class="stat-card blue">Всего заявок: <span id="totalOrders">0</span></div>
                     <div class="stat-card green">Выполнено: <span id="completedOrders">0</span></div>
                     <div class="stat-card orange">В работе: <span id="progressOrders">0</span></div>
                     <div class="stat-card red">Новых: <span id="newOrders">0</span></div>
+                    <div class="stat-card purple">Активные акции: <span id="activePromotions">0</span></div>
+                </div>
+
+                <!-- Управление акциями -->
+                <div class="promotions-section">
+                    <h3 style="margin-top: 0; margin-bottom: 20px;">🎁 Управление акциями</h3>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="showAddPromotionForm()" style="background: #2ecc71; color: white;">➕ Добавить акцию</button>
+                        <button class="action-btn" onclick="loadPromotions()" style="background: #3498db; color: white;">🔄 Обновить</button>
+                    </div>
+
+                    <div id="promotionsList">
+                        <!-- Список акций будет здесь -->
+                    </div>
+
+                    <!-- Форма добавления акции -->
+                    <div id="addPromotionForm" class="hidden" style="background: white; padding: 20px; border-radius: 12px; margin-top: 20px; border: 2px solid #e1e8ed;">
+                        <h4 style="margin-top: 0;">Добавить новую акцию</h4>
+                        <div class="form-group">
+                            <label for="promoTitle">Название акции:</label>
+                            <input type="text" id="promoTitle" placeholder="Например: Весенняя скидка">
+                        </div>
+                        <div class="form-group">
+                            <label for="promoDescription">Описание акции:</label>
+                            <textarea id="promoDescription" placeholder="Подробное описание акции..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="promoDiscount">Скидка (%):</label>
+                            <input type="number" id="promoDiscount" placeholder="10" min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="promoStartDate">Дата начала:</label>
+                            <input type="date" id="promoStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="promoEndDate">Дата окончания:</label>
+                            <input type="date" id="promoEndDate">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="addPromotion()" style="background: #2ecc71; color: white;">💾 Сохранить акцию</button>
+                            <button class="action-btn" onclick="hideAddPromotionForm()" style="background: #95a5a6; color: white;">❌ Отмена</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Фильтры -->
@@ -649,6 +760,7 @@
     <!-- Мобильная навигация -->
     <div class="mobile-nav">
         <div class="nav-item active" onclick="scrollToSection('stats')">📊</div>
+        <div class="nav-item" onclick="scrollToSection('promotions')">🎁</div>
         <div class="nav-item" onclick="scrollToSection('orders')">📋</div>
         <div class="nav-item" onclick="scrollToSection('calendar')">📅</div>
         <div class="nav-item" onclick="scrollToSection('settings')">⚙️</div>
@@ -658,7 +770,6 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // Весь JavaScript код остается полностью таким же как в предыдущей версии
         // База данных пользователей
         const users = {
             'main': {
@@ -710,6 +821,28 @@
             }
         };
 
+        // База данных акций
+        let promotions = [
+            {
+                id: 1,
+                title: "Первая химчистка со скидкой",
+                description: "Скидка 15% на первую химчистку для новых клиентов",
+                discount: 15,
+                startDate: "2024-01-01",
+                endDate: "2024-12-31",
+                active: true
+            },
+            {
+                id: 2,
+                title: "Весенняя акция",
+                description: "Скидка 20% на химчистку диванов и кресел",
+                discount: 20,
+                startDate: "2024-03-01",
+                endDate: "2024-04-30",
+                active: true
+            }
+        ];
+
         // Настройки Telegram
         let telegramSettings = {
             token: '',
@@ -722,7 +855,6 @@
 
         // Загрузка данных при запуске
         document.addEventListener('DOMContentLoaded', function() {
-            // Скрываем preloader
             setTimeout(() => {
                 document.getElementById('preloader').classList.add('hidden');
             }, 1000);
@@ -730,6 +862,7 @@
             checkAuth();
             loadTelegramSettings();
             setupEventListeners();
+            loadPromotions();
         });
 
         // Проверка авторизации
@@ -757,7 +890,6 @@
             document.getElementById('userRole').textContent = 
                 `${currentUser.name} (${currentUser.role === 'main_admin' ? 'Главный админ' : 'Админ'})`;
             
-            // Показываем/скрываем функции в зависимости от роли
             if (currentUser.role === 'main_admin') {
                 document.getElementById('telegramSettings').classList.remove('hidden');
             }
@@ -766,6 +898,7 @@
             updateStats();
             loadCalendar();
             loadClientOrders();
+            loadPromotions();
         }
 
         // Вход в систему
@@ -796,6 +929,153 @@
             showToast('👋 До свидания!', 'success');
         }
 
+        // 🔔 УПРАВЛЕНИЕ АКЦИЯМИ
+        function loadPromotions() {
+            const promotionsList = document.getElementById('promotionsList');
+            promotionsList.innerHTML = '';
+
+            const now = new Date();
+            let activeCount = 0;
+
+            promotions.forEach(promo => {
+                const startDate = new Date(promo.startDate);
+                const endDate = new Date(promo.endDate);
+                const isActive = promo.active && now >= startDate && now <= endDate;
+                const isExpired = now > endDate;
+
+                if (isActive) activeCount++;
+
+                const promoElement = document.createElement('div');
+                promoElement.className = `promotion-card ${isActive ? 'active' : ''} ${isExpired ? 'expired' : ''}`;
+                promoElement.innerHTML = `
+                    <div class="promotion-header">
+                        <div class="promotion-title">${promo.title}</div>
+                        <div class="promotion-discount">-${promo.discount}%</div>
+                    </div>
+                    <div class="promotion-date">
+                        📅 ${formatDate(promo.startDate)} - ${formatDate(promo.endDate)}
+                        ${isActive ? ' 🟢 Активна' : isExpired ? ' 🔴 Завершена' : ' 🟡 Не началась'}
+                    </div>
+                    <div class="promotion-description">${promo.description}</div>
+                    <div class="action-buttons" style="margin-top: 15px;">
+                        <button class="btn btn-edit" onclick="editPromotion(${promo.id})">✏️</button>
+                        <button class="btn btn-delete" onclick="deletePromotion(${promo.id})">🗑️</button>
+                        <button class="btn" onclick="togglePromotion(${promo.id})" style="background: ${promo.active ? '#e67e22' : '#2ecc71'}; color: white;">
+                            ${promo.active ? '❌ Деактивировать' : '✅ Активировать'}
+                        </button>
+                    </div>
+                `;
+                promotionsList.appendChild(promoElement);
+            });
+
+            document.getElementById('activePromotions').textContent = activeCount;
+            showToast('✅ Акции загружены', 'success');
+        }
+
+        function showAddPromotionForm() {
+            document.getElementById('addPromotionForm').classList.remove('hidden');
+            // Устанавливаем даты по умолчанию
+            const today = new Date().toISOString().split('T')[0];
+            const nextMonth = new Date();
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            const nextMonthStr = nextMonth.toISOString().split('T')[0];
+            
+            document.getElementById('promoStartDate').value = today;
+            document.getElementById('promoEndDate').value = nextMonthStr;
+        }
+
+        function hideAddPromotionForm() {
+            document.getElementById('addPromotionForm').classList.add('hidden');
+            // Очищаем форму
+            document.getElementById('promoTitle').value = '';
+            document.getElementById('promoDescription').value = '';
+            document.getElementById('promoDiscount').value = '';
+        }
+
+        function addPromotion() {
+            const title = document.getElementById('promoTitle').value;
+            const description = document.getElementById('promoDescription').value;
+            const discount = parseInt(document.getElementById('promoDiscount').value);
+            const startDate = document.getElementById('promoStartDate').value;
+            const endDate = document.getElementById('promoEndDate').value;
+
+            if (!title || !description || !discount || !startDate || !endDate) {
+                showToast('❌ Заполните все поля!', 'error');
+                return;
+            }
+
+            if (discount < 1 || discount > 100) {
+                showToast('❌ Скидка должна быть от 1% до 100%!', 'error');
+                return;
+            }
+
+            const newPromotion = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                discount: discount,
+                startDate: startDate,
+                endDate: endDate,
+                active: true
+            };
+
+            promotions.push(newPromotion);
+            savePromotions();
+            loadPromotions();
+            hideAddPromotionForm();
+            showToast('✅ Акция успешно добавлена!', 'success');
+        }
+
+        function editPromotion(promoId) {
+            const promo = promotions.find(p => p.id === promoId);
+            if (promo) {
+                document.getElementById('promoTitle').value = promo.title;
+                document.getElementById('promoDescription').value = promo.description;
+                document.getElementById('promoDiscount').value = promo.discount;
+                document.getElementById('promoStartDate').value = promo.startDate;
+                document.getElementById('promoEndDate').value = promo.endDate;
+                
+                // Удаляем старую акцию
+                promotions = promotions.filter(p => p.id !== promoId);
+                
+                showAddPromotionForm();
+                showToast('✏️ Редактирование акции', 'success');
+            }
+        }
+
+        function deletePromotion(promoId) {
+            if (confirm('Удалить эту акцию?')) {
+                promotions = promotions.filter(p => p.id !== promoId);
+                savePromotions();
+                loadPromotions();
+                showToast('✅ Акция удалена', 'success');
+            }
+        }
+
+        function togglePromotion(promoId) {
+            const promo = promotions.find(p => p.id === promoId);
+            if (promo) {
+                promo.active = !promo.active;
+                savePromotions();
+                loadPromotions();
+                showToast(`✅ Акция ${promo.active ? 'активирована' : 'деактивирована'}`, 'success');
+            }
+        }
+
+        function savePromotions() {
+            localStorage.setItem('cleaning_promotions', JSON.stringify(promotions));
+        }
+
+        function loadPromotionsFromStorage() {
+            const saved = localStorage.getItem('cleaning_promotions');
+            if (saved) {
+                promotions = JSON.parse(saved);
+            }
+        }
+
+        // Остальной код (календарь, заявки, Telegram) остается без изменений...
+        // [Весь предыдущий JavaScript код для календаря, заявок, Telegram и т.д.]
+
         // Загрузка настроек Telegram
         function loadTelegramSettings() {
             const saved = localStorage.getItem('telegramSettings');
@@ -804,6 +1084,7 @@
                 document.getElementById('telegramToken').value = telegramSettings.token || '';
                 document.getElementById('telegramChatId').value = telegramSettings.chatId || '';
             }
+            loadPromotionsFromStorage();
         }
 
         // Сохранение настроек Telegram
@@ -863,7 +1144,6 @@
             document.getElementById('calendarDate').addEventListener('change', loadCalendar);
             document.getElementById('statusFilter').addEventListener('change', loadOrders);
             
-            // Enter для входа
             document.getElementById('password').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     login();
@@ -1068,7 +1348,6 @@
                 order.status = newStatus;
                 updateStats();
                 
-                // 🔔 ОТПРАВКА УВЕДОМЛЕНИЯ ПРИ ЛЮБОМ ИЗМЕНЕНИИ СТАТУСА
                 const statusMessages = {
                     'new': '🆕 Новая заявка',
                     'confirmed': '✅ Подтверждена', 
@@ -1135,7 +1414,6 @@
                     orders.push(clientOrder);
                     newOrdersCount++;
                     
-                    // Отправляем уведомление о новой заявке от клиента
                     sendTelegramNotification(
                         `🎯 <b>НОВАЯ ОНЛАЙН-ЗАЯВКА!</b>\n` +
                         `👤 <b>Клиент:</b> ${clientOrder.client.name}\n` +
@@ -1170,9 +1448,10 @@
         function scrollToSection(section) {
             const sections = {
                 'stats': 0,
-                'orders': 400,
-                'calendar': 800,
-                'settings': 1200
+                'promotions': 400,
+                'orders': 800,
+                'calendar': 1200,
+                'settings': 1600
             };
             
             window.scrollTo({
@@ -1180,7 +1459,6 @@
                 behavior: 'smooth'
             });
 
-            // Обновляем активную иконку
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
