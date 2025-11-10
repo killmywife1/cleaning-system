@@ -2,239 +2,487 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Химчистка">
+    <meta name="format-detection" content="telephone=no">
     <title>Запись на химчистку - Чистый Дом</title>
+    <link rel="stylesheet" href="assets/style.css">
     <style>
         * {
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
         }
         .container {
-            max-width: 600px;
+            max-width: 100%;
             margin: 0 auto;
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 15px;
+            min-height: 100vh;
+            position: relative;
+        }
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                min-height: auto;
+                padding: 30px;
+            }
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            padding-top: env(safe-area-inset-top);
         }
         .header h1 {
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
         }
         .header p {
             color: #7f8c8d;
             margin: 0;
+            font-size: 18px;
+            line-height: 1.4;
         }
         .back-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             color: #3498db;
             text-decoration: none;
             margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .back-link:hover {
-            text-decoration: underline;
+            font-size: 17px;
+            padding: 12px 0;
+            font-weight: 600;
+            min-height: 44px;
         }
         .form-group {
             margin-bottom: 25px;
         }
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+            margin-bottom: 12px;
+            font-weight: 700;
             color: #34495e;
+            font-size: 18px;
         }
         input, select, textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #bdc3c7;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 18px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 16px;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            -webkit-appearance: none;
+            min-height: 60px;
+            line-height: 1.4;
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #3498db;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+            transform: translateY(-2px);
         }
         textarea {
-            height: 80px;
+            height: 120px;
             resize: vertical;
+            line-height: 1.5;
+        }
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334495e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 20px;
+            padding-right: 60px;
         }
         .calendar {
             margin: 25px 0;
             background: #f8f9fa;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 20px;
+            border: 2px solid #e9ecef;
         }
         .date-navigation {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 0 10px;
+            margin-bottom: 25px;
+            gap: 10px;
         }
         .nav-btn {
             background: #3498db;
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 16px 20px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            min-width: 100px;
+            min-height: 54px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: #2980b9;
         }
         .nav-btn:disabled {
             background: #bdc3c7;
             cursor: not-allowed;
+            transform: none;
+        }
+        .current-date {
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            flex: 1;
+            color: #2c3e50;
+            padding: 0 10px;
         }
         .time-slots {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 12px;
         }
+        @media (min-width: 480px) {
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
         .time-slot {
-            padding: 15px;
-            border-radius: 8px;
+            padding: 22px 16px;
+            border-radius: 16px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid;
-            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid;
+            font-weight: 700;
+            font-size: 17px;
+            user-select: none;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .time-slot:active {
+            transform: scale(0.95);
         }
         .slot-free { 
-            background: #d5f4e6; 
+            background: #e8f6ef; 
             border-color: #2ecc71;
             color: #27ae60;
         }
         .slot-busy { 
-            background: #fadbd8; 
+            background: #fdedec; 
             border-color: #e74c3c;
             cursor: not-allowed;
-            opacity: 0.5;
+            opacity: 0.6;
             color: #c0392b;
         }
         .slot-blocked { 
-            background: #fdebd0; 
+            background: #fef5e7; 
             border-color: #e67e22;
             cursor: not-allowed;
-            opacity: 0.5;
+            opacity: 0.6;
             color: #d35400;
         }
         .slot-selected { 
             background: #3498db; 
             color: white;
             border-color: #2980b9;
-        }
-        .time-slot:hover:not(.slot-busy):not(.slot-blocked) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
         }
         .submit-btn {
             width: 100%;
-            padding: 18px;
-            background: #2ecc71;
+            padding: 22px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 800;
             cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.3s;
+            margin-top: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-height: 68px;
+            letter-spacing: 0.5px;
         }
-        .submit-btn:hover:not(:disabled) {
-            background: #27ae60;
+        .submit-btn:active {
+            transform: scale(0.98);
+            background: linear-gradient(135deg, #27ae60, #219653);
         }
         .submit-btn:disabled {
             background: #bdc3c7;
             cursor: not-allowed;
+            transform: none;
         }
         .hidden {
-            display: none;
+            display: none !important;
         }
         .step-indicator {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            align-items: center;
+            margin-bottom: 35px;
+            gap: 8px;
+            padding: 0 10px;
         }
         .step {
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: #ecf0f1;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 10px;
-            font-weight: bold;
+            font-weight: 800;
             color: #7f8c8d;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
         }
         .step.active {
             background: #3498db;
             color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
         }
         .step-line {
             flex: 1;
-            height: 3px;
+            height: 4px;
             background: #ecf0f1;
-            margin: 0 5px;
-            align-self: center;
+            max-width: 50px;
+            position: relative;
+            z-index: 1;
         }
         .order-summary {
-            background: #ecf0f1;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #3498db;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 6px solid #3498db;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .service-option {
             display: flex;
             align-items: center;
-            margin: 10px 0;
-            padding: 10px;
+            margin: 15px 0;
+            padding: 20px;
             background: white;
-            border-radius: 5px;
+            border-radius: 16px;
             cursor: pointer;
-            border: 2px solid #ecf0f1;
-            transition: border-color 0.3s;
+            border: 3px solid #ecf0f1;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            min-height: 80px;
+        }
+        .service-option:active {
+            transform: scale(0.98);
         }
         .service-option.selected {
             border-color: #3498db;
             background: #e3f2fd;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+            transform: translateY(-2px);
         }
         .service-option input {
-            width: auto;
-            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            margin-right: 16px;
+            accent-color: #3498db;
+            min-height: auto;
+        }
+        .service-option label {
+            margin: 0;
+            flex: 1;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            line-height: 1.3;
         }
         .price-badge {
-            background: #2ecc71;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
-            padding: 4px 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 800;
+            margin-left: 12px;
+            white-space: nowrap;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 64px;
+        }
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        /* Улучшения для дополнительных опций */
+        .extra-options {
+            margin-top: 25px;
+        }
+        .extra-option {
+            margin: 12px 0;
+            padding: 18px;
+            background: #f8f9fa;
             border-radius: 12px;
-            font-size: 12px;
-            margin-left: auto;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        .extra-option:active {
+            background: #e9ecef;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slide-in {
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Безопасные зоны для iPhone X+ */
+        @supports(padding: max(0px)) {
+            .container {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+                padding-bottom: max(15px, env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* Улучшения для iOS */
+        input, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s;
+        }
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Toast уведомления */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2c3e50;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            background: #2ecc71;
+        }
+        .toast.error {
+            background: #e74c3c;
         }
     </style>
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="spinner"></div>
+    </div>
+
     <div class="container">
-        <div class="header">
+        <div class="header fade-in">
             <a href="index.html" class="back-link">← На главную</a>
             <h1>📝 Запись на химчистку</h1>
             <p>Выберите услугу и удобное время</p>
         </div>
 
         <!-- Индикатор шагов -->
-        <div class="step-indicator">
+        <div class="step-indicator fade-in">
             <div class="step active">1</div>
             <div class="step-line"></div>
             <div class="step">2</div>
@@ -246,67 +494,67 @@
         <form id="bookingForm">
             <!-- Шаг 1: Выбор услуги -->
             <div class="form-group" id="serviceStep">
-                <h3>Выберите услугу</h3>
+                <h3 style="margin-bottom: 25px; color: #2c3e50; font-size: 24px; font-weight: 800;">Выберите услугу</h3>
                 
                 <div class="service-option" onclick="selectService('sofa_2', 1700)">
                     <input type="radio" name="service" value="sofa_2" id="sofa_2">
-                    <label for="sofa_2" style="display: inline; margin: 0; cursor: pointer;">Диван 2-местный</label>
+                    <label for="sofa_2">Диван 2-местный</label>
                     <span class="price-badge">1700 ₽</span>
                 </div>
 
                 <div class="service-option" onclick="selectService('sofa_3', 2200)">
                     <input type="radio" name="service" value="sofa_3" id="sofa_3">
-                    <label for="sofa_3" style="display: inline; margin: 0; cursor: pointer;">Диван 3-местный</label>
+                    <label for="sofa_3">Диван 3-местный</label>
                     <span class="price-badge">2200 ₽</span>
                 </div>
 
                 <div class="service-option" onclick="selectService('armchair', 1300)">
                     <input type="radio" name="service" value="armchair" id="armchair">
-                    <label for="armchair" style="display: inline; margin: 0; cursor: pointer;">Кресло</label>
+                    <label for="armchair">Кресло</label>
                     <span class="price-badge">1300 ₽</span>
                 </div>
 
                 <div class="service-option" onclick="selectService('mattress_1', 1600)">
                     <input type="radio" name="service" value="mattress_1" id="mattress_1">
-                    <label for="mattress_1" style="display: inline; margin: 0; cursor: pointer;">Матрас односпальный</label>
+                    <label for="mattress_1">Матрас односпальный</label>
                     <span class="price-badge">1600 ₽</span>
                 </div>
 
                 <div class="service-option" onclick="selectService('mattress_2', 2000)">
                     <input type="radio" name="service" value="mattress_2" id="mattress_2">
-                    <label for="mattress_2" style="display: inline; margin: 0; cursor: pointer;">Матрас двуспальный</label>
+                    <label for="mattress_2">Матрас двуспальный</label>
                     <span class="price-badge">2000 ₽</span>
                 </div>
 
-                <div style="margin-top: 20px;">
-                    <label>Дополнительные опции:</label>
-                    <div style="margin-top: 10px;">
-                        <input type="checkbox" id="urgent" onchange="calculateTotal()">
-                        <label for="urgent" style="display: inline; margin-left: 5px;">Срочный выезд (+20%)</label>
+                <div class="extra-options">
+                    <label style="font-size: 20px; margin-bottom: 20px;">Дополнительные опции:</label>
+                    <div class="extra-option">
+                        <input type="checkbox" id="urgent" onchange="calculateTotal()" style="width: 24px; height: 24px; min-height: auto;">
+                        <label for="urgent" style="display: inline; margin-left: 15px; font-size: 18px; margin-bottom: 0;">Срочный выезд (+20%)</label>
                     </div>
-                    <div style="margin-top: 5px;">
-                        <input type="checkbox" id="stain" onchange="calculateTotal()">
-                        <label for="stain" style="display: inline; margin-left: 5px;">Сложные пятна (+300 ₽)</label>
+                    <div class="extra-option">
+                        <input type="checkbox" id="stain" onchange="calculateTotal()" style="width: 24px; height: 24px; min-height: auto;">
+                        <label for="stain" style="display: inline; margin-left: 15px; font-size: 18px; margin-bottom: 0;">Сложные пятна (+300 ₽)</label>
                     </div>
                 </div>
 
-                <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 8px;">
-                    <strong>Предварительная стоимость: <span id="preliminaryTotal">0</span> ₽</strong>
+                <div style="margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 20px; text-align: center; border: 2px solid #90caf9;">
+                    <strong style="font-size: 20px;">Предварительная стоимость: <span id="preliminaryTotal" style="color: #2ecc71; font-size: 24px; font-weight: 800;">0</span> ₽</strong>
                 </div>
 
-                <button type="button" onclick="nextStep()" style="margin-top: 20px; padding: 15px 30px; background: #3498db; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+                <button type="button" onclick="nextStep()" style="margin-top: 30px; padding: 22px; background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; border-radius: 16px; font-size: 20px; font-weight: 800; cursor: pointer; width: 100%; min-height: 68px;">
                     Далее → Выбор времени
                 </button>
             </div>
 
             <!-- Шаг 2: Выбор времени -->
             <div class="form-group hidden" id="timeStep">
-                <h3>Выберите удобное время</h3>
+                <h3 style="margin-bottom: 25px; color: #2c3e50; font-size: 24px; font-weight: 800;">Выберите удобное время</h3>
                 
                 <div class="calendar">
                     <div class="date-navigation">
                         <button type="button" class="nav-btn" onclick="changeDate(-1)">← Назад</button>
-                        <span id="currentDate" style="font-weight: bold; font-size: 16px;">Загрузка...</span>
+                        <span id="currentDate" class="current-date">Загрузка...</span>
                         <button type="button" class="nav-btn" onclick="changeDate(1)">Вперед →</button>
                     </div>
                     
@@ -315,11 +563,11 @@
                     </div>
                 </div>
                 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="button" onclick="prevStep()" style="flex: 1; padding: 15px; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                <div class="action-buttons">
+                    <button type="button" onclick="prevStep()" class="action-btn btn-secondary">
                         ← Назад
                     </button>
-                    <button type="button" onclick="nextStep()" style="flex: 1; padding: 15px; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    <button type="button" onclick="nextStep()" class="action-btn btn-primary">
                         Далее → Данные
                     </button>
                 </div>
@@ -327,43 +575,47 @@
 
             <!-- Шаг 3: Данные клиента -->
             <div class="form-group hidden" id="clientStep">
-                <h3>Ваши контактные данные</h3>
+                <h3 style="margin-bottom: 25px; color: #2c3e50; font-size: 24px; font-weight: 800;">Ваши контактные данные</h3>
                 
                 <div class="order-summary" id="orderSummary">
                     <!-- Сюда подставляется информация о заказе -->
                 </div>
                 
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 25px;">
                     <label for="clientName">Ваше имя *</label>
                     <input type="text" id="clientName" placeholder="Иван Иванов" required>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 25px;">
                     <label for="clientPhone">Номер телефона *</label>
-                    <input type="tel" id="clientPhone" placeholder="+7 (999) 123-45-67" required>
+                    <input type="tel" id="clientPhone" placeholder="+7 (999) 123-45-67" required inputmode="tel">
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 25px;">
                     <label for="clientAddress">Адрес *</label>
                     <input type="text" id="clientAddress" placeholder="ул. Примерная, д. 1, кв. 1" required>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 25px;">
                     <label for="clientComment">Комментарий к заказу</label>
                     <textarea id="clientComment" placeholder="Особые пятна, особенности мебели, пожелания..."></textarea>
                 </div>
                 
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" onclick="prevStep()" style="flex: 1; padding: 15px; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                <div class="action-buttons">
+                    <button type="button" onclick="prevStep()" class="action-btn btn-secondary">
                         ← Назад
                     </button>
-                    <button type="submit" class="submit-btn">Отправить заявку</button>
+                    <button type="submit" class="submit-btn">📨 Отправить заявку</button>
                 </div>
             </div>
         </form>
     </div>
 
+    <!-- Toast уведомления -->
+    <div id="toast" class="toast"></div>
+
     <script>
+        // Основная логика формы
         let currentStep = 1;
         let selectedDate = new Date().toISOString().split('T')[0];
         let selectedTimeSlot = null;
@@ -371,17 +623,22 @@
         let selectedService = null;
         let servicePrice = 0;
 
-        // Загрузка календаря при запуске
+        // Загрузка при запуске
         document.addEventListener('DOMContentLoaded', function() {
+            // Скрываем preloader
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 1000);
+
             loadCalendar();
             updateDateDisplay();
             loadTimeSlots();
             updateStepIndicator();
         });
 
-        // Загрузка календаря из sessionStorage
+        // Загрузка календаря из localStorage
         function loadCalendar() {
-            const savedCalendar = sessionStorage.getItem('cleaning_calendar');
+            const savedCalendar = localStorage.getItem('cleaning_calendar');
             if (savedCalendar) {
                 currentCalendar = JSON.parse(savedCalendar);
             }
@@ -439,15 +696,16 @@
         // Навигация по шагам
         function nextStep() {
             if (currentStep === 1 && !selectedService) {
-                alert('Пожалуйста, выберите услугу');
+                showToast('Пожалуйста, выберите услугу', 'error');
                 return;
             }
             
             if (currentStep === 2 && !selectedTimeSlot) {
-                alert('Пожалуйста, выберите время для записи');
+                showToast('Пожалуйста, выберите время для записи', 'error');
                 return;
             }
 
+            // Анимация перехода
             document.getElementById('serviceStep').classList.add('hidden');
             document.getElementById('timeStep').classList.add('hidden');
             document.getElementById('clientStep').classList.add('hidden');
@@ -463,6 +721,8 @@
             }
             
             updateStepIndicator();
+            // Прокрутка к верху
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function prevStep() {
@@ -479,6 +739,20 @@
             }
             
             updateStepIndicator();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toast уведомления
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast';
+            if (type) toast.classList.add(type);
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
         // Работа с датами
@@ -490,7 +764,7 @@
             const today = new Date();
             today.setHours(0,0,0,0);
             if (date < today) {
-                alert('Нельзя выбрать прошедшую дату');
+                showToast('Нельзя выбрать прошедшую дату', 'error');
                 return;
             }
             
@@ -561,13 +835,82 @@
             const total = document.getElementById('preliminaryTotal').textContent;
 
             document.getElementById('orderSummary').innerHTML = `
-                <strong>Ваш заказ:</strong><br><br>
-                <strong>Услуга:</strong> ${serviceName}<br>
-                <strong>Дата:</strong> ${dateString}<br>
-                <strong>Время:</strong> ${selectedTimeSlot}<br>
-                ${extras.length > 0 ? `<strong>Дополнительно:</strong> ${extras.join(', ')}<br>` : ''}
-                <strong style="color: #2ecc71; font-size: 18px;">Итого: ${total} ₽</strong>
+                <strong style="font-size: 20px; display: block; margin-bottom: 15px;">📋 Ваш заказ:</strong>
+                <div style="line-height: 1.6; font-size: 16px;">
+                    <strong>🛋️ Услуга:</strong> ${serviceName}<br>
+                    <strong>📅 Дата:</strong> ${dateString}<br>
+                    <strong>⏰ Время:</strong> ${selectedTimeSlot}<br>
+                    ${extras.length > 0 ? `<strong>✨ Дополнительно:</strong> ${extras.join(', ')}<br>` : ''}
+                    <strong style="color: #2ecc71; font-size: 22px; display: block; margin-top: 15px; padding-top: 10px; border-top: 2px solid #3498db;">💰 Итого: ${total} ₽</strong>
+                </div>
             `;
+        }
+
+        // 🔔 ФУНКЦИЯ ДЛЯ ОТПРАВКИ УВЕДОМЛЕНИЙ ПРИ НОВЫХ ЗАЯВКАХ
+        function sendNewOrderTelegramNotification(order) {
+            const telegramSettings = JSON.parse(localStorage.getItem('telegramSettings') || '{}');
+            
+            if (!telegramSettings.token || !telegramSettings.chatId) {
+                console.log('Telegram бот не настроен - уведомление не отправлено');
+                return;
+            }
+
+            const message = `🎯 <b>НОВАЯ ОНЛАЙН-ЗАЯВКА!</b>\n` +
+                           `👤 <b>Клиент:</b> ${order.client.name}\n` +
+                           `📞 <b>Телефон:</b> ${order.client.phone}\n` +
+                           `🏠 <b>Адрес:</b> ${order.client.address}\n` +
+                           `🛋️ <b>Услуга:</b> ${order.order.product_name}\n` +
+                           `📅 <b>Дата/время:</b> ${order.time_slot}\n` +
+                           `💰 <b>Стоимость:</b> ${order.order.total} руб.\n` +
+                           (order.client.comment ? `📝 <b>Комментарий:</b> ${order.client.comment}` : '');
+
+            const url = `https://api.telegram.org/bot${telegramSettings.token}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: telegramSettings.chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log('✅ Уведомление о новой заявке отправлено в Telegram');
+                } else {
+                    console.error('❌ Ошибка отправки уведомления:', data);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Ошибка сети:', error);
+            });
+        }
+
+        function saveOrder(order) {
+            const existingOrders = JSON.parse(localStorage.getItem('cleaning_orders') || '[]');
+            existingOrders.push(order);
+            localStorage.setItem('cleaning_orders', JSON.stringify(existingOrders));
+            console.log('Заявка сохранена в localStorage:', order);
+            
+            // 🔔 ОТПРАВКА УВЕДОМЛЕНИЯ В TELEGRAM ПРИ НОВОЙ ЗАЯВКЕ
+            sendNewOrderTelegramNotification(order);
+        }
+
+        function blockTimeSlot(order) {
+            if (!currentCalendar[selectedDate]) {
+                currentCalendar[selectedDate] = {};
+            }
+            currentCalendar[selectedDate][selectedTimeSlot] = {
+                status: "busy",
+                order_id: order.id
+            };
+            
+            localStorage.setItem('cleaning_calendar', JSON.stringify(currentCalendar));
+            console.log('Время заблокировано в календаре:', selectedDate, selectedTimeSlot);
         }
 
         // Отправка формы
@@ -578,7 +921,7 @@
             if (!document.getElementById('clientName').value || 
                 !document.getElementById('clientPhone').value || 
                 !document.getElementById('clientAddress').value) {
-                alert('Пожалуйста, заполните все обязательные поля');
+                showToast('Пожалуйста, заполните все обязательные поля', 'error');
                 return;
             }
 
@@ -611,16 +954,22 @@
                 newOrder.order.extras.push('stain');
             }
 
-            // Сохраняем заявку
+            // Сохраняем заявку в localStorage
             saveOrder(newOrder);
 
             // Блокируем время в календаре
             blockTimeSlot(newOrder);
 
-            alert('✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время для подтверждения.');
+            showToast('✅ Заявка успешно отправлена! Мы свяжемся с вами для подтверждения.', 'success');
             
             // Сбрасываем форму
-            this.reset();
+            setTimeout(() => {
+                resetForm();
+            }, 2000);
+        });
+
+        function resetForm() {
+            document.getElementById('bookingForm').reset();
             currentStep = 1;
             selectedTimeSlot = null;
             selectedService = null;
@@ -635,25 +984,25 @@
             document.getElementById('timeStep').classList.add('hidden');
             document.getElementById('clientStep').classList.add('hidden');
             updateStepIndicator();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Обработка клавиатуры на мобильных
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
         });
 
-        function saveOrder(order) {
-            const existingOrders = JSON.parse(sessionStorage.getItem('cleaning_orders') || '[]');
-            existingOrders.push(order);
-            sessionStorage.setItem('cleaning_orders', JSON.stringify(existingOrders));
-        }
-
-        function blockTimeSlot(order) {
-            if (!currentCalendar[selectedDate]) {
-                currentCalendar[selectedDate] = {};
+        // Предотвращение масштабирования при двойном тапе
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
             }
-            currentCalendar[selectedDate][selectedTimeSlot] = {
-                status: "busy",
-                order_id: order.id
-            };
-            
-            sessionStorage.setItem('cleaning_calendar', JSON.stringify(currentCalendar));
-        }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
