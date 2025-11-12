@@ -349,6 +349,134 @@ body {
   font-size: 0.9rem;
 }
 
+/* Promotions Section - MOBILE FIRST */
+.promotions-section {
+  padding: 40px 16px;
+  background: rgba(26, 26, 26, 0.8);
+  margin: 40px 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  width: 100%;
+}
+
+.promotions-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.promotions-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.promotions-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+.promotions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.promotion-card {
+  background: rgba(37, 37, 37, 0.8);
+  padding: 20px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.promotion-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.promotion-card.promotion-hot {
+  border: 2px solid #EF4444;
+  background: linear-gradient(135deg, rgba(37, 37, 37, 0.9) 0%, rgba(239, 68, 68, 0.1) 100%);
+}
+
+.promotion-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--accent);
+  color: var(--primary-bg);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.promotion-hot .promotion-badge {
+  background: #EF4444;
+}
+
+.promotion-content h3 {
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  padding-right: 80px;
+}
+
+.promotion-description {
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.promotion-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.promotion-discount {
+  background: var(--success);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.promotion-period {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.promotions-cta {
+  text-align: center;
+  padding: 20px 16px;
+  background: rgba(37, 37, 37, 0.8);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.promotions-cta p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
 /* Reviews Section - MOBILE FIRST */
 .reviews-section {
   padding: 40px 16px;
@@ -810,6 +938,90 @@ tr:hover {
   background: rgba(212, 175, 55, 0.05);
 }
 
+/* Стили для админ-панели акций */
+.promotion-admin-card {
+  background: rgba(26, 26, 26, 0.8);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  margin-bottom: 15px;
+  transition: var(--transition);
+}
+
+.promotion-admin-card.active {
+  border-left: 4px solid #10B981;
+}
+
+.promotion-admin-card.expired {
+  border-left: 4px solid #e74c3c;
+  opacity: 0.7;
+}
+
+.promotion-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 15px;
+}
+
+.promotion-admin-info {
+  flex: 1;
+}
+
+.promotion-admin-title {
+  font-weight: 700;
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.promotion-admin-badge {
+  background: #D4AF37;
+  color: #0A0A0A;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.promotion-admin-discount {
+  background: #10B981;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.promotion-admin-description {
+  color: #B0B0B0;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.promotion-admin-dates {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+  color: #B0B0B0;
+}
+
+.promotion-admin-status {
+  font-weight: 600;
+}
+
+.promotion-admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 /* ===== GENERAL BUTTONS - MOBILE FIRST ===== */
 .btn {
   display: inline-flex;
@@ -925,6 +1137,10 @@ tr:hover {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
   
+  .promotions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
   .reviews-grid {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
@@ -950,11 +1166,15 @@ tr:hover {
   .calendar-sidebar {
     order: 0;
   }
+  
+  .stats-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 @media (min-width: 1024px) {
   .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -999,7 +1219,8 @@ tr:hover {
   .btn:hover,
   .feature-card:hover,
   .review-card:hover,
-  .stat-card:hover {
+  .stat-card:hover,
+  .promotion-card:hover {
     transform: none;
   }
   
@@ -1015,7 +1236,8 @@ tr:hover {
   .hero-title,
   .about-title,
   .pricing-title,
-  .reviews-title {
+  .reviews-title,
+  .promotions-title {
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
@@ -1029,6 +1251,21 @@ tr:hover {
   input, select, textarea {
     font-size: 16px !important; /* Предотвращает зум в iOS */
   }
+  
+  /* Адаптивность для админ-панели акций */
+  .promotion-admin-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .promotion-admin-actions {
+    flex-direction: column;
+  }
+  
+  .promotion-admin-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===== SAFARI SPECIFIC FIXES ===== */
@@ -1039,4 +1276,178 @@ tr:hover {
   .time-slot {
     cursor: pointer;
   }
+}
+
+/* Стили для секции результатов */
+.results-section {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.results-title {
+    font-size: 2.5em;
+    color: #D4AF37;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+}
+
+.results-subtitle {
+    font-size: 1.2em;
+    color: #B0B0B0;
+    margin-bottom: 50px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Стили слайдера */
+.slider-container {
+    position: relative;
+    max-width: 640px;
+    width: 100%;
+    height: 900px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    cursor: col-resize;
+    border: 2px solid #D4AF37;
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.before-image {
+    z-index: 1;
+}
+
+.after-image {
+    width: 50%;
+    z-index: 2;
+    border-right: 3px solid #D4AF37;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: #D4AF37;
+    z-index: 3;
+    cursor: col-resize;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+    transition: all 0.3s ease;
+}
+
+.slider-handle:hover {
+    transform: translateX(-50%) scaleX(1.3);
+    background: #FFD700;
+}
+
+.slider-handle::after {
+    content: '⟷';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: #D4AF37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #1a1a1a;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.slider-handle:hover::after {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: #FFD700;
+}
+
+.labels {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 25px;
+    z-index: 4;
+}
+
+.label {
+    background: rgba(26, 26, 26, 0.9);
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: #D4AF37;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-size: 1.1em;
+    border: 1px solid #D4AF37;
+    backdrop-filter: blur(10px);
+}
+
+.instructions {
+    color: #B0B0B0;
+    margin-top: 25px;
+    font-size: 1.1em;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 700px) {
+    .slider-container {
+        height: 600px;
+    }
+    
+    .results-title {
+        font-size: 2em;
+    }
+    
+    .label {
+        padding: 10px 18px;
+        font-size: 1em;
+    }
+    
+    .slider-handle::after {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-container {
+        height: 500px;
+    }
+    
+    .results-title {
+        font-size: 1.7em;
+    }
+    
+    .instructions {
+        font-size: 1em;
+        padding: 12px;
+    }
 }
