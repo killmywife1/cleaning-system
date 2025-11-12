@@ -5,238 +5,235 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pena Lux - Выездная химчистка премиум-класса</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для секции результатов */
+        .results-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .results-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .results-title {
+            font-size: 2.5em;
+            color: #D4AF37;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .results-subtitle {
+            font-size: 1.2em;
+            color: #B0B0B0;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Стили слайдера */
+        .slider-container {
+            position: relative;
+            max-width: 640px;
+            width: 100%;
+            height: 900px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            cursor: col-resize;
+            border: 2px solid #D4AF37;
+        }
+
+        .image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .before-image {
+            z-index: 1;
+        }
+
+        .after-image {
+            width: 50%;
+            z-index: 2;
+            border-right: 3px solid #D4AF37;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: #D4AF37;
+            z-index: 3;
+            cursor: col-resize;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .slider-handle:hover {
+            transform: translateX(-50%) scaleX(1.3);
+            background: #FFD700;
+        }
+
+        .slider-handle::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: #D4AF37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #1a1a1a;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slider-handle:hover::after {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #FFD700;
+        }
+
+        .labels {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 4;
+        }
+
+        .label {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #D4AF37;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 1.1em;
+            border: 1px solid #D4AF37;
+            backdrop-filter: blur(10px);
+        }
+
+        .instructions {
+            color: #B0B0B0;
+            margin-top: 25px;
+            font-size: 1.1em;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 700px) {
+            .slider-container {
+                height: 600px;
+            }
+            
+            .results-title {
+                font-size: 2em;
+            }
+            
+            .label {
+                padding: 10px 18px;
+                font-size: 1em;
+            }
+            
+            .slider-handle::after {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slider-container {
+                height: 500px;
+            }
+            
+            .results-title {
+                font-size: 1.7em;
+            }
+            
+            .instructions {
+                font-size: 1em;
+                padding: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <!-- About Section - ПЕРВЫМ -->
         <section class="about-section fade-in">
-            <div class="about-container">
-                <h2 class="about-title">✨ Pena Lux — Новая эра чистоты в вашем доме</h2>
-                
-                <div class="about-content">
-                    <div class="about-text">
-                        <p class="about-description">
-                            <strong>Мы — свежее дыхание в мире химчистки.</strong> Хотя мы недавно на рынке, 
-                            наш подход уже оценили десятки клиентов. Мы доказали: чтобы делать что-то идеально, 
-                            не нужны десятилетия опыта — нужны passion, современные технологии и искренняя забота о клиенте.
-                        </p>
-                        
-                        <div class="about-features">
-                            <div class="about-feature">
-                                <span class="feature-icon">🚀</span>
-                                <div>
-                                    <h4>Стартап-энергия</h4>
-                                    <p>Мы молоды, амбициозны и готовы доказать, что новички могут делать лучше ветеранов</p>
-                                </div>
-                            </div>
-                            
-                            <div class="about-feature">
-                                <span class="feature-icon">💎</span>
-                                <div>
-                                    <h4>Идеализм в деталях</h4>
-                                    <p>Каждый заказ для нас — вызов. Мы не успокоимся, пока результат не будет безупречным</p>
-                                </div>
-                            </div>
-                            
-                            <div class="about-feature">
-                                <span class="feature-icon">🤝</span>
-                                <div>
-                                    <h4>Честность прежде всего</h4>
-                                    <p>Мы не обещаем невозможного, но гарантируем: сделаем всё возможное и даже немного больше</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 30px; padding: 20px; background: rgba(212, 175, 55, 0.1); border-radius: 10px; border-left: 4px solid #D4AF37;">
-                            <p style="color: #B0B0B0; font-style: italic; margin: 0;">
-                                "Нас выбирают те, кто устал от шаблонного подхода и ищет сервис, 
-                                где к их дому относятся как к своему собственному"
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="about-stats">
-                        <div class="stat">
-                            <div class="stat-number">100%</div>
-                            <div class="stat-label">положительных отзывов</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">негативных отзывов</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">24/7</div>
-                            <div class="stat-label">личный менеджер</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">1-2 дня</div>
-                            <div class="stat-label">среднее время записи</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- ... ваш существующий код ... -->
         </section>
 
         <!-- Pricing Section - ВТОРЫМ -->
         <section class="pricing-section" id="pricing">
-            <div class="pricing-container">
-                <h2 class="pricing-title">💰 Прозрачное ценообразование</h2>
-                <p class="pricing-subtitle">Никаких скрытых платежей — вы платите только за выбранные услуги</p>
+            <!-- ... ваш существующий код ... -->
+        </section>
+
+        <!-- СЛАЙДЕР ДО/ПОСЛЕ - добавляем после цен -->
+        <section class="results-section">
+            <div class="results-container">
+                <h2 class="results-title">📸 Результаты наших работ</h2>
+                <p class="results-subtitle">Убедитесь в эффективности химчистки - сравните фото до и после</p>
                 
-                <div class="pricing-grid">
-                    <div class="pricing-category">
-                        <h3>🛋️ Мягкая мебель</h3>
-                        <div class="price-item">
-                            <span class="service-name">Диван 2-местный</span>
-                            <span class="service-price">1700 ₽</span>
-                        </div>
-                        <div class="price-item">
-                            <span class="service-name">Диван 3-местный</span>
-                            <span class="service-price">2200 ₽</span>
-                        </div>
-                        <div class="price-item">
-                            <span class="service-name">Кресло</span>
-                            <span class="service-price">1300 ₽</span>
-                        </div>
-                    </div>
+                <div class="slider-container" id="slider">
+                    <!-- ПУТИ К ФОТО -->
+                    <img src="Images/before.jpg" alt="До химчистки" class="image before-image">
+                    <img src="Images/after.jpg" alt="После химчистки" class="image after-image">
                     
-                    <div class="pricing-category">
-                        <h3>🛏️ Матрасы</h3>
-                        <div class="price-item">
-                            <span class="service-name">Матрас односпальный</span>
-                            <span class="service-price">1600 ₽</span>
-                        </div>
-                        <div class="price-item">
-                            <span class="service-name">Матрас двуспальный</span>
-                            <span class="service-price">2000 ₽</span>
-                        </div>
-                    </div>
+                    <div class="slider-handle" id="handle"></div>
                     
-                    <div class="pricing-category">
-                        <h3>🧹 Ковры</h3>
-                        <div class="price-item">
-                            <span class="service-name">Ковер до 3м²</span>
-                            <span class="service-price">900 ₽</span>
-                        </div>
-                        <div class="price-item">
-                            <span class="service-name">Ковер 3-6м²</span>
-                            <span class="service-price">1500 ₽</span>
-                        </div>
-                        <div class="price-item">
-                            <span class="service-name">Ковер от 6м²</span>
-                            <span class="service-price">2400 ₽</span>
-                        </div>
+                    <div class="labels">
+                        <div class="label">👈 ДО</div>
+                        <div class="label">ПОСЛЕ 👉</div>
                     </div>
                 </div>
                 
-                <div class="pricing-note">
-                    <p>💡 <strong>Дополнительные услуги:</strong> Срочный выезд +20%, Сложные пятна +300₽, Удаление запахов +500₽</p>
-                </div>
+                <p class="instructions">← Перетащите ползунок или кликните в любую точку →</p>
             </div>
         </section>
 
-        <!-- Hero Section - ТРЕТЬИМ (кнопка записи) -->
+        <!-- Promotions Section - ТРЕТЬИМ -->
+        <section class="promotions-section">
+            <!-- ... ваш существующий код ... -->
+        </section>
+
+        <!-- Hero Section - ЧЕТВЕРТЫМ -->
         <div class="hero-section">
-            <h1 class="hero-title">🧼 Pena Lux</h1>
-            <p class="hero-subtitle">Убедились в нашем профессионализме? Запишитесь на химчистку прямо сейчас!</p>
-            
-            <div class="hero-buttons">
-                <a href="client-booking.html" class="btn-hero">
-                    📝 Записаться на химчистку
-                </a>
-                <a href="#pricing" class="btn-hero btn-hero-secondary">
-                    💰 Посмотреть цены
-                </a>
-            </div>
+            <!-- ... ваш существующий код ... -->
         </div>
 
         <!-- Features Grid -->
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🚀</div>
-                <h3 class="feature-title">Выезд в день обращения</h3>
-                <p class="feature-description">Быстрая организация выезда наших специалистов в удобное для вас время</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🌿</div>
-                <h3 class="feature-title">Экологичные средства</h3>
-                <p class="feature-description">Используем только безопасные и гипоаллергенные чистящие средства</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">⭐</div>
-                <h3 class="feature-title">Гарантия качества</h3>
-                <p class="feature-description">100% гарантия на все виды работ и используемые материалы</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔧</div>
-                <h3 class="feature-title">Профессиональное оборудование</h3>
-                <p class="feature-description">Современное немецкое оборудование для безупречного результата</p>
-            </div>
+            <!-- ... ваш существующий код ... -->
         </div>
 
         <!-- Reviews Section -->
         <section class="reviews-section">
-            <div class="reviews-container">
-                <h2 class="reviews-title">💬 Наши первые, но уже восторженные отзывы</h2>
-                <p style="text-align: center; color: #B0B0B0; margin-bottom: 40px; font-style: italic;">
-                    Мы только начинаем, но каждый отзыв для нас — как первая победа
-                </p>
-                
-                <div class="reviews-grid">
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-avatar">А</div>
-                            <div class="reviewer-info">
-                                <div class="reviewer-name">Анна Петрова</div>
-                                <div class="review-date">Первый клиент</div>
-                            </div>
-                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
-                        </div>
-                        <div class="review-text">
-                            "Решила рискнуть с новой компанией — и не пожалела! Отношение как к старому другу, 
-                            а качество работы выше, чем у 'раскрученных' конкурентов. Теперь только к вам!"
-                        </div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-avatar">М</div>
-                            <div class="reviewer-info">
-                                <div class="reviewer-name">Михаил Иванов</div>
-                                <div class="review-date">По рекомендации</div>
-                            </div>
-                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
-                        </div>
-                        <div class="review-text">
-                            "Друг посоветовал как 'секретную находку'. Действительно, ребята горят своим делом! 
-                            Убрали пятна, с которыми другие не справились. Рекомендую пока о вас мало кто знает 😉"
-                        </div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-avatar">Е</div>
-                            <div class="reviewer-info">
-                                <div class="reviewer-name">Елена Смирнова</div>
-                                <div class="review-date">Постоянный клиент</div>
-                            </div>
-                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
-                        </div>
-                        <div class="review-text">
-                            "Нашла своих мастеров! Молодые, но очень ответственные. Чувствуется, 
-                            что для них важна каждая деталь и мнение каждого клиента. Приятно быть среди первых!"
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="reviews-cta">
-                    <p><strong>Станьте одним из наших первых клиентов</strong> — и получите тот самый персонализированный подход, 
-                    который теряется у крупных компаний! <a href="client-booking.html" class="cta-link">Начать сотрудничество →</a></p>
-                </div>
-            </div>
+            <!-- ... ваш существующий код ... -->
         </section>
 
         <!-- Admin Access -->
@@ -248,6 +245,67 @@
     </div>
 
     <script>
+        // СЛАЙДЕР ДО/ПОСЛЕ - JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('slider');
+            const handle = document.getElementById('handle');
+            const afterImage = document.querySelector('.after-image');
+            let isDragging = false;
+
+            function updateSliderPosition(clientX) {
+                const sliderRect = slider.getBoundingClientRect();
+                let position = ((clientX - sliderRect.left) / sliderRect.width) * 100;
+                
+                position = Math.max(0, Math.min(100, position));
+                
+                afterImage.style.width = position + '%';
+                handle.style.left = position + '%';
+            }
+
+            slider.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                updateSliderPosition(e.clientX);
+                slider.style.cursor = 'grabbing';
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (isDragging) {
+                    updateSliderPosition(e.clientX);
+                }
+            });
+
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                slider.style.cursor = 'col-resize';
+            });
+
+            slider.addEventListener('touchstart', function(e) {
+                isDragging = true;
+                updateSliderPosition(e.touches[0].clientX);
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', function(e) {
+                if (isDragging) {
+                    updateSliderPosition(e.touches[0].clientX);
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('touchend', function() {
+                isDragging = false;
+            });
+
+            slider.addEventListener('click', function(e) {
+                updateSliderPosition(e.clientX);
+            });
+
+            slider.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+            });
+        });
+
+        // ВАШ СУЩЕСТВУЮЩИЙ СКРИПТ - оставляем как есть
         // Плавный скролл к якорям
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -260,6 +318,85 @@
                     });
                 }
             });
+        });
+
+        // Загрузка и отображение акций
+        function loadPromotions() {
+            const promotionsGrid = document.getElementById('promotionsGrid');
+            const promotionsCta = document.getElementById('promotionsCta');
+            const noPromotions = document.getElementById('noPromotions');
+            
+            const savedPromotions = localStorage.getItem('cleaning_promotions');
+            let activePromotions = [];
+
+            if (savedPromotions) {
+                const promotions = JSON.parse(savedPromotions);
+                const now = new Date();
+                
+                // Фильтруем активные акции
+                activePromotions = promotions.filter(promo => {
+                    const startDate = new Date(promo.startDate);
+                    const endDate = new Date(promo.endDate);
+                    return promo.active && now >= startDate && now <= endDate;
+                });
+            }
+
+            if (activePromotions.length === 0) {
+                promotionsGrid.style.display = 'none';
+                promotionsCta.style.display = 'none';
+                noPromotions.style.display = 'block';
+                return;
+            }
+
+            // Показываем акции
+            promotionsGrid.style.display = 'grid';
+            promotionsCta.style.display = 'block';
+            noPromotions.style.display = 'none';
+            
+            let html = '';
+            
+            activePromotions.forEach((promo, index) => {
+                const badgeType = {
+                    'first_order': '🆕 ДЛЯ НОВЫХ',
+                    'complex': '⭐ КОМПЛЕКС', 
+                    'referral': '👥 ДЛЯ ДРУЗЕЙ',
+                    'seasonal': '🎄 СЕЗОННАЯ',
+                    'other': '🎁 АКЦИЯ'
+                }[promo.type] || '🎁 АКЦИЯ';
+
+                const isHot = index === 0; // Первая акция - горячая
+                
+                html += `
+                    <div class="promotion-card ${isHot ? 'promotion-hot' : ''}">
+                        <div class="promotion-badge">${badgeType}</div>
+                        <div class="promotion-content">
+                            <h3>${promo.title}</h3>
+                            <p class="promotion-description">${promo.description}</p>
+                            <div class="promotion-details">
+                                <span class="promotion-discount">-${promo.discount}%</span>
+                                <span class="promotion-period">До ${formatPromotionDate(promo.endDate)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            promotionsGrid.innerHTML = html;
+        }
+
+        // Вспомогательная функция для форматирования даты
+        function formatPromotionDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Загружаем акции при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPromotions();
         });
     </script>
 </body>
